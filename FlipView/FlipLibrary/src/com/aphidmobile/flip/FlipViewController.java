@@ -17,6 +17,9 @@ limitations under the License.
 
 package com.aphidmobile.flip;
 
+import java.util.LinkedList;
+
+import junit.framework.Assert;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -27,6 +30,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -38,10 +42,6 @@ import android.widget.AdapterView;
 
 import com.aphidmobile.utils.AphidLog;
 import com.openaphid.flip.R;
-
-import junit.framework.Assert;
-
-import java.util.LinkedList;
 
 public class FlipViewController extends AdapterView<Adapter> {
 
@@ -76,6 +76,7 @@ public class FlipViewController extends AdapterView<Adapter> {
   private FlipRenderer renderer;
   private FlipCards cards;
 
+  
   private int contentWidth;
   private int contentHeight;
 
@@ -162,8 +163,14 @@ public class FlipViewController extends AdapterView<Adapter> {
     touchSlop = configuration.getScaledTouchSlop();
     this.flipOrientation = orientation;
     setupSurfaceView(context);
+    
+   
   }
 
+  public FlipCards getCards(){
+	  return cards;
+  }
+  
   public Bitmap.Config getAnimationBitmapFormat() {
     return animationBitmapFormat;
   }
@@ -422,7 +429,8 @@ public class FlipViewController extends AdapterView<Adapter> {
     renderer = new FlipRenderer(this, cards);
 
     surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-    surfaceView.setZOrderOnTop(true);
+    //surfaceView.setZOrderOnTop(true);
+   // surfaceView.setZOrderMediaOverlay(false);
     surfaceView.setRenderer(renderer);
     surfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
     surfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
@@ -574,7 +582,7 @@ public class FlipViewController extends AdapterView<Adapter> {
 
   private void hideFlipAnimation() {
     if (inFlipAnimation) {
-      inFlipAnimation = false;
+      inFlipAnimation = true;
 
       updateVisibleView(bufferIndex);
 
